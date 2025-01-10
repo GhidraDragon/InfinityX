@@ -1,0 +1,1 @@
+sh select_architecture.sh --intel uname -m

@@ -1,0 +1,1 @@
+ sh select_architecture.sh --apple-silicon uname -m

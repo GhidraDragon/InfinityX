@@ -1,2 +1,8 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+.venv/include filter=lfs diff=lfs merge=lfs -text
+.venv/lib filter=lfs diff=lfs merge=lfs -text
+.venv/pyvenv.cfg filter=lfs diff=lfs merge=lfs -text
+.venv/share filter=lfs diff=lfs merge=lfs -text
+.venv/bin filter=lfs diff=lfs merge=lfs -text
+.venv/lib/python3.11/site-packages/torch/lib/libtorch_cpu.dylib filter=lfs diff=lfs merge=lfs -text
