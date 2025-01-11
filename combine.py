@@ -11,7 +11,7 @@ Usage:
   python3 combine_side_by_side.py <image1> <image2> [--style_weight FLOAT] [--content_weight FLOAT]
 
 Example:
-  python3 combine_side_by_side.py content.jpg style.jpg --style_weight 40000 --content_weight 400
+  python3 combine_side_by_side.py content.jpg style.jpg --style_weight 15000 --content_weight 150
 
 Note:
   - This script uses PyTorch to perform Neural Style Transfer. 
@@ -23,8 +23,7 @@ Note:
   - Both the content image and the style image are forced to the same spatial
     dimensions to avoid tensor shape mismatches during loss calculations.
   - Various safety checks are included to help ensure robust usage.
-  - By default, we set style_weight=4e4 and content_weight=400 (this is 100% higher
-    than the previous defaults of 2e4 and 200).
+  - By default, we set style_weight=2e4 and content_weight=200 (twice our previous 1e4 and 100).
     You may adjust these by using the optional command-line arguments.
 
 Requirements:
@@ -223,14 +222,14 @@ def run_style_transfer(
         normalization_mean, normalization_std,
         content_img, style_img, input_img,
         num_steps=300,
-        style_weight=4e4,  # NEW DEFAULT: previously 2e4
-        content_weight=400 # NEW DEFAULT: previously 200
+        style_weight=2e4,  # updated default (twice 1e4)
+        content_weight=200 # updated default (twice 100)
     ):
     """
     Run the style transfer optimization.
 
-    - Default style_weight = 4e4  (previously 2e4, now 100% higher)
-    - Default content_weight = 400 (previously 200, now 100% higher)
+    - Default style_weight = 2e4  (twice our previous 1e4)
+    - Default content_weight = 200 (twice our previous 100)
     """
     print("[INFO] Building the style transfer model..")
     model, style_losses, content_losses = get_style_model_and_losses(
@@ -285,8 +284,8 @@ def apply_style_transfer(
     image_content_path, 
     image_style_path, 
     output_path,
-    style_weight=4e4, 
-    content_weight=400
+    style_weight=2e4, 
+    content_weight=200
 ):
     """
     Apply the style of image_style_path onto the content of image_content_path,
@@ -295,8 +294,8 @@ def apply_style_transfer(
     We only place style loss on early conv layers, so we mostly transfer color
     while preserving distinct structural features of argv[1].
 
-    :param style_weight: float, how heavily to weight the style (default 4e4)
-    :param content_weight: float, how heavily to weight the content (default 400)
+    :param style_weight: float, how heavily to weight the style
+    :param content_weight: float, how heavily to weight the content
     """
     # Safety checks for file existence
     if not os.path.isfile(image_content_path):
@@ -329,7 +328,7 @@ def apply_style_transfer(
     cnn_normalization_mean = torch.tensor([0.485, 0.456, 0.406]).to(device)
     cnn_normalization_std = torch.tensor([0.229, 0.224, 0.225]).to(device)
 
-    # Run style transfer with user-specified (or new default) style_weight and content_weight
+    # Run style transfer with user-specified (or default) style_weight and content_weight
     output_tensor = run_style_transfer(
         cnn,
         cnn_normalization_mean,
@@ -362,14 +361,14 @@ def main():
     parser.add_argument(
         "--style_weight",
         type=float,
-        default=4e4,
-        help="Adjust style weight. Default is 40000.0 (increased 100% from 20000.0)."
+        default=2e4,
+        help="Adjust style weight. Default is 20000.0 (twice 1e4)."
     )
     parser.add_argument(
         "--content_weight",
         type=float,
-        default=400,
-        help="Adjust content weight. Default is 400 (increased 100% from 200)."
+        default=200,
+        help="Adjust content weight. Default is 200 (twice 100)."
     )
 
     args = parser.parse_args()
