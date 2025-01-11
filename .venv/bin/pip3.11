@@ -1,4 +1,4 @@
-#!/Users/bo/Library/CloudStorage/OneDrive-PDFSageInc/Style_Trans_VGG19/.venv/bin/python3.11
+#!/Users/bo/Library/CloudStorage/OneDrive-PDFSageInc/Style_Trans_VGG19/.venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
